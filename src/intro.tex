@@ -1,6 +1,8 @@
 \label{sec:intro}
 
-With the development of algorithms and computation platforms, a single moving robot can navigate and build map in a novel environment. The cooperation of different robots can greatly improve the system capability, and the multi-robot system is a promising research field.
+With the development of algorithms and computation platforms, a single moving robot can navigate and build map in a novel environment. 
+Limited by the perception range, the system capability of a single robot is not sufficient to deal with tasks in complex environments.
+The cooperation of different robots can greatly improve the system capability, and the multi-robot system is a promising research field.
 
 Distributed Simultaneously Localization and Mapping (DSLAM)~\cite{corah2019communication, cieslewski2018data}, which provides the status of different robots and the environment, is a fundamental problem for multi-robot systems, including multi-robot navigation \cite{tanner2005towards} and rescue \cite{baxter2007multi}. As illustrated in \Cref{fig:DSLAMframe}, there are three function thread on each robot, Visual Odometry (VO), Map Building (Map) and Place Recognition (PR). VO reads two time adjacent input images and calculates the relative pose between these images, and finial produces the trajectory of the robots. PR generates compact image representation to produce the candidate place recognition matches between different robots. Map thread records trajectory and builds the environment into local map.
 
@@ -19,3 +21,4 @@ Distributed Simultaneously Localization and Mapping (DSLAM)~\cite{corah2019commu
     }
 \label{fig:overview}
 \end{figure*}
+

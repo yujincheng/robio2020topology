@@ -1,0 +1,45 @@
+\label{sec:related}
+
+Visual Odometry (VO) is crucial for various applications in the multi-robot system, such as Distributed Simultaneously Localization and Mapping (DSLAM)~\cite{corah2019communication, cieslewski2018data}, and multi-robot navigation \cite{tanner2005towards}.
+According to the calculation method of pose, current existing VO schemes can be mainly divided into Traditional methods which are usually hand-crafted stage-wise systems, and deep learning based methods which can infer the pose or the depth from a single image by using Convolutional Neural Network (CNN).
+Traditional methods use feature-based methods or direct methods to search for the corresponding points, and multi-view geometry to estimate the pose.
+The feature-based methods, like SIFT and ORB, search for corresponding keypoints by matching hand-crafted high-dimensional feature descriptors.
+The direct methods, such as LSD-SLAM, directly exploit pixel intensity values to match the corresponding points.
+
+The Traditional methods rely on the depth data of stereo camera or RGB-D camera to calculate the scale factor of translation.
+However, the cost of obtaining deep data is relatively high. Compared to stereo or RGB-d cameras, monocular cameras are more economical and easier to calibrate. 
+Recently, some deep learning based methods have chosen to use monocular data to predict depth and scale
+Zhou, et al. used unsupervised methods to restore depth and pose from monocular data.
+Bian, et al. obtained a uniform scale pose through per-pixel-min geometry consistency loss without the depth data of stereo camera or RGB-D camera.
+
+The various VO schemes mentioned above, although their pipeline may be different from each other, have a common premise that there must be sufficient overlap between two adjacent frames.
+Only if this condition is met, the monocular VO can correctly calculate the relative motion between the two frames.
+Monocular cameras, stereo cameras, and RGB-D cameras are all limited Field-of-View (FoV) cameras.
+The limited FoV based VO or SLAM systems have four inherent defects:
+
+1) Difficult to handle scenes lacking overlap. 
+For a common limited FoV camera, fast movement especially fast rotation will lead to a reduction in the overlap between consecutive frames, resulting in unreliable VO output and even tracking failure. 
+This problem can be exacerbated in the SLAM systems that require high-definition maps, where a large format sensor (e.g., $4000 \times 3000$ pixels compared to a commonly used $640 \times 480$ sensor) requires a wide baseline shooting mode because of limited imaging and memory access speed.
+
+2) Difficult to handle movement in dynamic scenes. 
+In the pipeline of VO, multi-view geometry or CNN methods are used to estimate the pose. 
+Both of these methods assume that the robot is in a static scene, since it is unreliable to model landmarks corresponding to dynamic objects  (such as pedestrians, vehicles, etc.). 
+However, the actual world is not always static.
+Therefore, certain algorithms, such as RANSAC (Random Sample Consensus), are applied to eliminate the effects of dynamic objects in the VO systems.
+These algorithms are effective only when the dynamic components are negligible in the entire FoV.
+However, it is not surprising that dynamic objects occupy most of the FoV in actual use for a limited FoV camera.
+In this case, the pose estimation by the VO system can hardly be kept consistent, and even worse, the VO system may fail to track.
+
+3) Difficult to handle texture-less scenes. 
+For a limited FoV camera, it’s not strange to encounter situations where texture-less objects occupy most of the field-of-view in actual use.
+For example, if the camera shoots a white wall, most of the image will be occupied by the wall, and there is not enough texture to estimate the motion of the camera.
+
+4) Difficult to deal with Place Recognition (PR) from different view. 
+PR generates compact image representation to produce the candidate place recognition matches between different robots.
+If two robots pass through the same place from different directions, the scene they see is usually different, and it is difficult for the DSLAM system to match them.
+For example, if a robot passes a crossroad and another robot crosses the same crossroad in the opposite or vertical direction, it is difficult for the robots to recognize that they have passed the same crossroad.
+
+In view of this, we propose to apply panoramic camera to a monocular visual odometry in this paper.
+Using the panoramic camera can solve or alleviate the four inherent defects mentioned above.
+One of the obvious benefits of $360^{\circ}$ panoramas is that it can ensure that there is enough overlap area between adjacent frames despite fast movement and rapid rotation, and it can also solve the problem of Place Recognition from different view.
+At the same time, the probability is extremely low that dynamic or texture-less objects occupy most of the FoV in a panoramic camera.
